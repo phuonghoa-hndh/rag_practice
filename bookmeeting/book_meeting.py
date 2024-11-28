@@ -1,15 +1,12 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from make_request import create_teams_meetings
 from langchain_community.chat_models import ChatOpenAI
-from dotenv import load_dotenv
+from make_request import create_teams_meetings
 
-
-load_dotenv()
 llm = ChatOpenAI()
 prompt_template = PromptTemplate(
     input_variables=["user_input"],
-    template="""You are an assistant designed to help users book a meeting on Microsoft Teams. 
+    template="""You are an assistant designed to help users book a meeting on Microsoft Teams.
     Give them the link to the meeting and rewrite the user for the meeting details such as:
     - Subject of the meeting
     - Start date and time
@@ -18,7 +15,7 @@ prompt_template = PromptTemplate(
 Schedule the meeting by calling the `create_teams_meeting` function.
 
 User query: {user_query}
-"""
+""",
 )
 
 chain = LLMChain(prompt=prompt_template, llm=llm)
@@ -31,4 +28,3 @@ def book_meeting(user_input):
         return create_teams_meetings(user_input)
     else:
         return response
-

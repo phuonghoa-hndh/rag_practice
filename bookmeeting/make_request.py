@@ -1,8 +1,11 @@
-import requests
 import json
-from authenticate import get_access_token
+import os
 from datetime import datetime, timedelta
-from constant import URL
+
+import requests
+from authenticate import get_access_token
+
+URL = os.getenv("URL")
 
 
 def create_teams_meetings(user_input):
@@ -12,42 +15,27 @@ def create_teams_meetings(user_input):
 
     headers = {
         "Authorization": "Bearer " + access_token,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
 
     url = URL
     meeting_data = {
         "subject": "Techvify Meeting",
-        "body": {
-            "contentType": "HTML",
-            "content": "Does next month work for you?"
-        },
-        "start": {
-            "dateTime": start_time.isoformat(),
-            "timeZone": "UTC"
-        },
-        "end": {
-            "dateTime": end_time.isoformat(),
-            "timeZone": "UTC"
-        },
-        "location": {
-            "displayName": "Dissneyland"
-        },
+        "body": {"contentType": "HTML", "content": "Does next month work for you?"},
+        "start": {"dateTime": start_time.isoformat(), "timeZone": "UTC"},
+        "end": {"dateTime": end_time.isoformat(), "timeZone": "UTC"},
+        "location": {"displayName": "Dissneyland"},
         "attendees": [
             {
-                "emailAddress": {
-                    "address": "phuonghoa.hndh@gmail.com",
-                    "name": "Hoa"
-                },
-                "type": "required"
+                "emailAddress": {"address": "phuonghoa.hndh@gmail.com", "name": "Hoa"},
+                "type": "required",
             }
         ],
         "isOnlineMeeting": True,
-        "onlineMeetingProvider": "teamsForBusiness"
+        "onlineMeetingProvider": "teamsForBusiness",
     }
 
-    response = requests.post(
-        url, headers=headers, data=json.dumps(meeting_data))
+    response = requests.post(url, headers=headers, data=json.dumps(meeting_data))
     if response.status_code == 201:
         meeting_data = response.json()
         # meeting_id = meeting_data["id"]
